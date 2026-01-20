@@ -18,8 +18,8 @@
 		<meta charset="utf-8">
 		<title> Авторизация </title>
 		
-		<script src="https://code.jquery.com/jquery-1.8.3.js"></script>
 		<link rel="stylesheet" href="style.css">
+		<script src="https://code.jquery.com/jquery-1.8.3.js"></script>
 	</head>
 	<body>
 		<div class="top-menu">
