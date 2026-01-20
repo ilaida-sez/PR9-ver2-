@@ -6,7 +6,6 @@
 		if($_SESSION['user'] == -1) {
 			header("Location: login.php");
 		} else {
-			// проверяем пользователя, если админ выкидываем на админа
 			$user_to_query = $mysqli->query("SELECT `roll` FROM `users` WHERE `id` = ".$_SESSION['user']);
 			$user_to_read = $user_to_query->fetch_row();
 			
@@ -53,6 +52,21 @@
 					<?php
 						echo $user_to_read[0];
 					?>
+
+					<?php
+						$Sql = "SELECT * FROM `session` WHERE `IdUser` = {$_SESSION["user"]} ORDER BY `DateStart` DESC";
+						$Query = $mysqli->query($Sql);
+						if($Query->num_rows > 1) {
+							$Read = $Query->fetch_assoc();
+							$Read = $Query->fetch_assoc();
+
+							$TimeEnd = strtotime($Read["DateNow"]);
+							$TimeNow = time();
+
+							$TimeDelta = round(($TimeNow - $TimeEnd)/60);
+							echo "<br>Последняя активная сессия была: ($TimeDelta) минут назад";
+						}
+					?>
 				</div>
 			
 				<div class="footer">
@@ -71,23 +85,18 @@
 					var data = new FormData();
 					data.append("id_statement", id_statement);
 					
-					// AJAX запрос
 					$.ajax({
 						url         : 'ajax/delete_statement.php',
-						type        : 'POST', // важно!
+						type        : 'POST',
 						data        : data,
 						cache       : false,
 						dataType    : 'html',
-						// отключаем обработку передаваемых данных, пусть передаются как есть
 						processData : false,
-						// отключаем установку заголовка типа запроса. Так jQuery скажет серверу что это строковой запрос
 						contentType : false, 
-						// функция успешного ответа сервера
 						success: function (_data) {
 							console.log(_data);
 							location.reload();
 						},
-						// функция ошибки
 						error: function(){
 							console.log('Системная ошибка!');
 						}
@@ -96,22 +105,23 @@
 			}
 			
 			function logout() {
-				$.ajax({
-					url         : 'ajax/logout.php',
-					type        : 'POST', // важно!
-					data        : null,
-					cache       : false,
-					dataType    : 'html',
-					processData : false,
-					contentType : false, 
-					success: function (_data) {
-						location.reload();
-					},
-					error: function( ){
-						console.log('Системная ошибка!');
-					}
-				});
-			}
+    $.ajax({
+        url         : 'ajax/logout.php',
+        type        : 'POST',
+        data        : null,
+        cache       : false,
+        dataType    : 'html',
+        processData : false,
+        contentType : false, 
+        success: function (_data) {
+            window.location.href = "index.php";
+        },
+        error: function(){
+            console.log('Системная ошибка!');
+            window.location.href = "index.php";
+        }
+    });
+}
 		</script>
 	</body>
 </html>

@@ -4,7 +4,7 @@
 	
 	if (isset($_SESSION['user'])) {
 		if($_SESSION['user'] != -1) {
-			$user_query = $mysqli->query("SELECT * FROM `users` WHERE `id` = ".$_SESSION['user']); // проверяем
+			$user_query = $mysqli->query("SELECT * FROM `users` WHERE `id` = ".$_SESSION['user']);
 			while($user_read = $user_query->fetch_row()) {
 				if($user_read[3] == 0) header("Location: index.php");
 			}
@@ -13,6 +13,8 @@
 		header("Location: login.php");
 		echo "Пользователя не существует";
 	}
+
+	include("./settings/session.php");
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -42,6 +44,21 @@
 				<div class="name">Административная панель</div>
 			
 				Административная панель служит для создания, редактирования и удаления записей на сайте.
+
+				<?php
+					$Sql = "SELECT * FROM `session` WHERE `IdUser` = {$_SESSION["user"]} ORDER BY `DateStart` DESC";
+					$Query = $mysqli->query($Sql);
+					if($Query->num_rows > 1) {
+						$Read = $Query->fetch_assoc();
+						$Read = $Query->fetch_assoc();
+
+						$TimeEnd = strtotime($Read["DateNow"]);
+						$TimeNow = time();
+
+						$TimeDelta = round(($TimeNow - $TimeEnd)/60);
+						echo "<br>Последняя активная сессия была: ($TimeDelta) минут назад";
+					}
+				?>
 			
 				<div class="footer">
 					© КГАПОУ "Авиатехникум", 2020
@@ -55,7 +72,7 @@
 			function logout() {
 				$.ajax({
 					url         : 'ajax/logout.php',
-					type        : 'POST', // важно!
+					type        : 'POST',
 					data        : null,
 					cache       : false,
 					dataType    : 'html',
