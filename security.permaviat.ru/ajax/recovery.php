@@ -14,10 +14,9 @@
 	}
 	
 	function PasswordGeneration() {
-		// создаём пароль
-		$chars="qazxswedcvfrtgbnhyujmkiolp1234567890QAZXSWEDCVFRTGBNHYUJMKIOLP"; // матрица
+		$chars="qazxswedcvfrtgbnhyujmkiolp1234567890QAZXSWEDCVFRTGBNHYUJMKIOLP";
 		$max=10; // количество
-		$size=StrLen($chars)-1; // Определяем количество символов в $chars
+		$size=StrLen($chars)-1;
 		$password="";
 		
 		while($max--) {

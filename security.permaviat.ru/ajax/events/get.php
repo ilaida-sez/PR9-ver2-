@@ -1,5 +1,4 @@
 <?php
-// Добавьте в начало файла:
 error_reporting(0);
 ini_set('display_errors', 0);
 header('Content-Type: application/json; charset=utf-8');
